@@ -3,6 +3,9 @@ const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
 const startBtn = document.getElementById('start-btn');
 
+console.log("Game Version: 1.1 (Giant Poop + 1.3x Size)");
+startBtn.innerText = "게임 시작 (v1.1)";
+
 const poopImg = new Image();
 poopImg.src = '똥.png';
 
