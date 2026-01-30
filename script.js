@@ -17,12 +17,17 @@ let poops = [];
 let lastTime = 0;
 let poopSpawnTimer = 0;
 
+// Responsive Sizing
+const isMobile = window.innerWidth <= 600;
+const playerSize = isMobile ? 30 : 40; // Smaller on mobile (30px), Standard on PC (40px)
+const poopSize = isMobile ? 35 : 45;   // Smaller on mobile (35px), Standard on PC (45px)
+
 // Player
 const player = {
     x: canvas.width / 2 - 20,
     y: canvas.height - 100, // Adjusted Y position (needs to be near bottom)
-    width: 40,  // Restored to ~12.5% of width (320 * 0.125)
-    height: 40,
+    width: playerSize,
+    height: playerSize,
     speed: 5,
     dx: 0,
     color: 'blue'
@@ -37,8 +42,8 @@ const keys = {
 // Poop Class
 class Poop {
     constructor() {
-        this.width = 45;  // ~14% of width
-        this.height = 45;
+        this.width = poopSize;
+        this.height = poopSize;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = -this.height;
         this.speed = 2 + Math.random() * 3; // Random speed between 2 and 5
