@@ -74,8 +74,40 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
-// Touch Controls for Mobile
+const leftBtn = document.getElementById('left-btn');
+const rightBtn = document.getElementById('right-btn');
+
+// Helper to handle input
+function setInput(key, value) {
+    if (key === 'left') keys.ArrowLeft = value;
+    if (key === 'right') keys.ArrowRight = value;
+}
+
+// Touch/Mouse events for visual buttons
+[leftBtn, rightBtn].forEach(btn => {
+    const dir = btn.id === 'left-btn' ? 'left' : 'right';
+
+    // Touch
+    btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        setInput(dir, true);
+    });
+    btn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        setInput(dir, false);
+    });
+
+    // Mouse (for testing on PC with standard clicks if visible)
+    btn.addEventListener('mousedown', () => setInput(dir, true));
+    btn.addEventListener('mouseup', () => setInput(dir, false));
+    btn.addEventListener('mouseleave', () => setInput(dir, false));
+});
+
+// Touch Controls for Mobile (Full Screen Touch)
 canvas.addEventListener('touchstart', (e) => {
+    // Only process if not touching a button (though buttons stop propagation usually)
+    if (e.target.classList.contains('touch-btn')) return;
+
     e.preventDefault(); // Prevent scrolling
     const touchX = e.touches[0].clientX;
     const middleX = window.innerWidth / 2;
