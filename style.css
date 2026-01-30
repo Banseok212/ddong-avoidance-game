@@ -7,6 +7,8 @@ body {
     align-items: center;
     height: 100vh;
     font-family: 'Arial', sans-serif;
+    touch-action: none;
+    /* Disable browser gestures (scroll/zoom/back-swipe) */
 }
 
 #game-container {

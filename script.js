@@ -21,8 +21,8 @@ let poopSpawnTimer = 0;
 const player = {
     x: canvas.width / 2 - 20,
     y: canvas.height - 120, // Adjusted Y position for larger height
-    width: 96,  // 120 * 0.8
-    height: 96, // 120 * 0.8
+    width: 72,  // 120 * 0.6
+    height: 72, // 120 * 0.6
     speed: 5,
     dx: 0,
     color: 'blue'
@@ -166,13 +166,17 @@ function startGame() {
 }
 
 function update(deltaTime) {
-    // Player Movement
-    if (keys.ArrowLeft && player.x > 0) {
-        player.x -= player.speed;
-    }
-    if (keys.ArrowRight && player.x < canvas.width - player.width) {
-        player.x += player.speed;
-    }
+    // Player Movement (Delta based to prevent jitter)
+    let dx = 0;
+    if (keys.ArrowLeft) dx -= player.speed;
+    if (keys.ArrowRight) dx += player.speed;
+
+    // Apply movement
+    player.x += dx;
+
+    // Clamp position (Keep inside canvas)
+    if (player.x < 0) player.x = 0;
+    if (player.x > canvas.width - player.width) player.x = canvas.width - player.width;
 
     // Spawn Poops
     poopSpawnTimer += deltaTime;
