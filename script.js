@@ -20,7 +20,7 @@ let poopSpawnTimer = 0;
 // Responsive Sizing
 const isMobile = window.innerWidth <= 600;
 const playerSize = isMobile ? 30 : 40; // Smaller on mobile (30px), Standard on PC (40px)
-const poopSize = isMobile ? 35 : 45;   // Smaller on mobile (35px), Standard on PC (45px)
+const poopSize = isMobile ? 46 : 59;   // Increased by 1.3x (35->46, 45->59)
 
 // Player
 const player = {
@@ -42,7 +42,7 @@ const keys = {
 // Poop Class
 class Poop {
     constructor() {
-        const isGiant = Math.random() < 0.3; // Increased to 30% for visibility
+        const isGiant = Math.random() < 0.1; // Reverted to 10% chance
         const sizeMultiplier = isGiant ? 3 : 1;
         if (isGiant) console.log("Giant Poop Spawning!"); // Debug log
 
