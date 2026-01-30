@@ -45,7 +45,7 @@ const keys = {
 // Poop Class
 class Poop {
     constructor() {
-        const isGiant = Math.random() < 0.1; // Reverted to 10% chance
+        const isGiant = Math.random() < 0.05; // Reduced to 5% chance (Half of 10%)
         const sizeMultiplier = isGiant ? 3 : 1;
         if (isGiant) console.log("Giant Poop Spawning!"); // Debug log
 
