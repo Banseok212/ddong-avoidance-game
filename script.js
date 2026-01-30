@@ -74,6 +74,27 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
+// Touch Controls for Mobile
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Prevent scrolling
+    const touchX = e.touches[0].clientX;
+    const middleX = window.innerWidth / 2;
+
+    if (touchX < middleX) {
+        keys.ArrowLeft = true;
+        keys.ArrowRight = false;
+    } else {
+        keys.ArrowLeft = false;
+        keys.ArrowRight = true;
+    }
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    keys.ArrowLeft = false;
+    keys.ArrowRight = false;
+});
+
 startBtn.addEventListener('click', startGame);
 
 function startGame() {
