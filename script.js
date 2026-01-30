@@ -42,8 +42,11 @@ const keys = {
 // Poop Class
 class Poop {
     constructor() {
-        this.width = poopSize;
-        this.height = poopSize;
+        const isGiant = Math.random() < 0.1; // 10% chance (1 out of 10)
+        const sizeMultiplier = isGiant ? 3 : 1;
+
+        this.width = poopSize * sizeMultiplier;
+        this.height = poopSize * sizeMultiplier;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = -this.height;
         this.speed = 2 + Math.random() * 3; // Random speed between 2 and 5
