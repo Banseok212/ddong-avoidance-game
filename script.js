@@ -21,8 +21,8 @@ let poopSpawnTimer = 0;
 const player = {
     x: canvas.width / 2 - 20,
     y: canvas.height - 100, // Adjusted Y position (needs to be near bottom)
-    width: 50,  // 72 * 0.7 (approx)
-    height: 50, // 72 * 0.7 (approx)
+    width: 40,  // Restored to ~12.5% of width (320 * 0.125)
+    height: 40,
     speed: 5,
     dx: 0,
     color: 'blue'
@@ -37,8 +37,8 @@ const keys = {
 // Poop Class
 class Poop {
     constructor() {
-        this.width = 58;  // 72 * 0.8 (approx)
-        this.height = 58; // 72 * 0.8 (approx)
+        this.width = 45;  // ~14% of width
+        this.height = 45;
         this.x = Math.random() * (canvas.width - this.width);
         this.y = -this.height;
         this.speed = 2 + Math.random() * 3; // Random speed between 2 and 5
