@@ -61,7 +61,7 @@ class Poop {
     }
 }
 
-// Event Listeners
+// Event Listeners (Keyboard)
 window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         keys[e.key] = true;
@@ -74,58 +74,79 @@ window.addEventListener('keyup', (e) => {
     }
 });
 
+// --- NEW MOBILE GLOBAL TOUCH CONTROLS ---
+
 const leftBtn = document.getElementById('left-btn');
 const rightBtn = document.getElementById('right-btn');
 
-// Helper to handle input
-function setInput(key, value) {
-    if (key === 'left') keys.ArrowLeft = value;
-    if (key === 'right') keys.ArrowRight = value;
+function handleGlobalTouch(e) {
+    // Allow start button to be clicked (it's a Button element)
+    if (e.target.id === 'start-btn') return;
+
+    e.preventDefault(); // Prevent scrolling/zooming
+
+    // Reset keys locally first - we recalculate based on current touches
+    let moveLeft = false;
+    let moveRight = false;
+
+    // Check all active touches
+    for (let i = 0; i < e.touches.length; i++) {
+        const touchX = e.touches[i].clientX;
+        const middleX = window.innerWidth / 2;
+
+        if (touchX < middleX) {
+            moveLeft = true;
+        } else {
+            moveRight = true;
+        }
+    }
+
+    // Apply strict Left/Right logic
+    keys.ArrowLeft = moveLeft;
+    keys.ArrowRight = moveRight;
+
+    // Update Visual Feedback
+    updateVisualButtons(moveLeft, moveRight);
 }
 
-// Touch/Mouse events for visual buttons
-[leftBtn, rightBtn].forEach(btn => {
-    const dir = btn.id === 'left-btn' ? 'left' : 'right';
-
-    // Touch
-    btn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        setInput(dir, true);
-    });
-    btn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        setInput(dir, false);
-    });
-
-    // Mouse (for testing on PC with standard clicks if visible)
-    btn.addEventListener('mousedown', () => setInput(dir, true));
-    btn.addEventListener('mouseup', () => setInput(dir, false));
-    btn.addEventListener('mouseleave', () => setInput(dir, false));
-});
-
-// Touch Controls for Mobile (Full Screen Touch)
-canvas.addEventListener('touchstart', (e) => {
-    // Only process if not touching a button (though buttons stop propagation usually)
-    if (e.target.classList.contains('touch-btn')) return;
-
-    e.preventDefault(); // Prevent scrolling
-    const touchX = e.touches[0].clientX;
-    const middleX = window.innerWidth / 2;
-
-    if (touchX < middleX) {
-        keys.ArrowLeft = true;
-        keys.ArrowRight = false;
+function updateVisualButtons(left, right) {
+    if (left) {
+        leftBtn.style.transform = 'scale(1.1)';
+        leftBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
     } else {
-        keys.ArrowLeft = false;
-        keys.ArrowRight = true;
+        leftBtn.style.transform = 'scale(1)';
+        leftBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
     }
-}, { passive: false });
 
-canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
+    if (right) {
+        rightBtn.style.transform = 'scale(1.1)';
+        rightBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+    } else {
+        rightBtn.style.transform = 'scale(1)';
+        rightBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+    }
+}
+
+// Attach to window to catch drags anywhere
+window.addEventListener('touchstart', handleGlobalTouch, { passive: false });
+window.addEventListener('touchmove', handleGlobalTouch, { passive: false });
+window.addEventListener('touchend', handleGlobalTouch, { passive: false });
+window.addEventListener('touchcancel', handleGlobalTouch, { passive: false });
+
+// Mouse listeners for visual feedback on PC (optional, but good for testing)
+window.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('touch-btn')) {
+        if (e.target.id === 'left-btn') keys.ArrowLeft = true;
+        if (e.target.id === 'right-btn') keys.ArrowRight = true;
+        updateVisualButtons(keys.ArrowLeft, keys.ArrowRight);
+    }
+});
+window.addEventListener('mouseup', () => {
     keys.ArrowLeft = false;
     keys.ArrowRight = false;
+    updateVisualButtons(false, false);
 });
+// ----------------------------------------
 
 startBtn.addEventListener('click', startGame);
 
